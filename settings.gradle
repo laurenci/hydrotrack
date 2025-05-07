@@ -1,0 +1,3 @@
+rootProject.name = 'hydrotrack'
+include 'core'
+include 'service'
