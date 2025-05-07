@@ -1,0 +1,55 @@
+@startuml
+participant Client
+participant RecordController
+participant AchievementSupportRecordService
+participant RecordRepository
+participant RecordJpaRepository
+participant AchievementMessageBrokerService
+queue "MessageBroker Subject" as mb
+database MariaDB
+
+alt check request body
+Client -> RecordController : POST req
+activate RecordController
+
+RecordController -> RecordController : validate json fields
+else Validation Failed
+RecordController --> Client : 400 Bad Request
+else Successful Validation
+RecordController -> AchievementSupportRecordService : addNewRecord(newRecord)
+activate AchievementSupportRecordService
+
+end
+
+AchievementSupportRecordService -> RecordRepository : create(record)
+activate RecordRepository
+
+RecordRepository -> RecordJpaRepository : create(record)
+activate RecordJpaRepository
+
+RecordJpaRepository -> MariaDB : DML Query
+activate MariaDB
+
+
+
+MariaDB -> MariaDB : process query
+MariaDB --> RecordJpaRepository : return state
+deactivate MariaDB
+
+RecordJpaRepository --> RecordRepository : return RecordJpa
+deactivate RecordJpaRepository
+
+RecordRepository --> AchievementSupportRecordService : return Record
+deactivate RecordRepository
+
+AchievementSupportRecordService -> AchievementMessageBrokerService : publish(userId, event)
+activate AchievementMessageBrokerService
+AchievementMessageBrokerService ->> mb : publish message
+deactivate AchievementMessageBrokerService
+
+AchievementSupportRecordService --> RecordController : return RecordDto
+deactivate AchievementSupportRecordService
+
+RecordController --> Client : 201 Created
+deactivate RecordController
+@enduml

@@ -1,0 +1,104 @@
+@startuml
+class User {
+    - Integer id
+    - String username
+    - Double expectedDailyAmount
+    - Profile profile
+    --
+    JavaBean's methods and conctructors
+}
+
+class Profile {
+    - Integer userId
+    - String firstName
+    - String lastName
+    - Sex sex
+    - LocalDate birthdayDate
+    --
+    JavaBean's methods and conctructors
+}
+
+enum Sex {
+    MALE
+    FEMALE
+    UNCERTAIN
+    OTHER
+}
+
+User *-- Profile
+Profile o-- Sex 
+
+class Drink {
+    - Integer id
+    - DrinkType type
+    - String brand
+    - String name
+    --
+    JavaBean's methods and conctructors
+}
+
+class CustomDrink {
+    - Integer userId
+    --
+    JavaBean's methods and conctructors
+}
+
+class DrinkType {
+    - String type
+    - DrinkGroup group
+    --
+    JavaBean's methods and conctructors
+}
+
+enum DrinkGroup {
+    WATER
+    TEA
+    COFFEE
+    ...
+}
+
+Drink <|-- CustomDrink
+Drink o-- DrinkType
+DrinkType o-- DrinkGroup
+
+class Record {
+    - RecordId id
+    - DrinkArea drinkArea
+    - Double amount
+    --
+    JavaBean's methods and conctructors
+}
+
+enum DrinkArea {
+    SYSTEM
+    CUSTOM
+}
+
+Record o-- DrinkArea
+
+class RecordId {
+    - Integer userId
+    - Drink drink
+    - LocalDateTime date
+    --
+    JavaBean's methods and conctructors
+}
+
+Record *-- RecordId
+Record o-- Drink
+
+class Report {
+    - ReportId id
+    - Double actualDailyAmount
+    - Double expectedDailyAmount
+}
+
+class ReportId {
+    - Integer userId
+    - LocalDate date
+    --
+    JavaBean's methods and conctructors
+}
+
+Report *-- ReportId
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+interface MessageBrokerService<M> {
+    + {abstract} publish(String subject, String message)
+    + {abstract} subscribe(String subject, Consumer<String> handler)
+}
+
+class AchievementMessageBrokerPublisher<E extends Enum<E>> {
+    - MessageBrokerService messageBroker
+    + publish(Integer userId, E event)
+}
+
+class  AchievementNotifierMessageBrokerPublisher {
+    - MessageBrokerService messageBroker
+    + publish(String name, String description)
+}
+
+AchievementMessageBrokerPublisher o-- MessageBrokerService
+AchievementNotifierMessageBrokerPublisher o-- MessageBrokerService
+@enduml

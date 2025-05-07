@@ -1,0 +1,41 @@
+@startuml
+interface Subscriber<T> {
+    + {abstract} void update(T t)
+}
+
+abstract class Achievement<Integer> {
+    + {abstract} void update(Integer userId) : void
+}
+
+class RecordAchievement <<example>> {
+    + void update(Integer userId)
+}
+
+Subscriber <|.. Achievement
+Achievement <|-- RecordAchievement
+
+class Publisher<T, E extends Enum<E>, Sub extends Subscriber<T>> {
+    - Map<E, List<Sub>> subscribers
+    + addSubscriber(E event, Sub subscriber)
+    + notifySubscribers(T t, E event)
+    + {static} builder() : PublisherBuilder
+}
+
+Publisher o-- Subscriber
+
+class PublisherBuilder<T, E extends Enum<E>, Sub extends Subscriber<T>> {
+    - Map<E, List<Sub>> subscribers
+    + addEventEntry(E event) : PublisherEventEntryFiller
+    + build() : Publisher
+}
+
+class PublisherEventEntryFiller<T, Sub extends Subscriber<T>> {
+    - PublisherBuilder publisherBuilder
+    - List<Sub> eventSubscribers
+    + addSubscriber(Sub subscriber) : PublisherEventEntryBuilder
+    + close() : PublisherBuilder
+}
+
+Publisher --> PublisherBuilder
+PublisherBuilder --> PublisherEventEntryFiller
+@enduml

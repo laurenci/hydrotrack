@@ -1,0 +1,23 @@
+@startuml
+skinparam linetype polyline
+skinparam componentStyle uml1
+
+component hydrotrack.core
+component hydrotrack.client
+
+component hydrotrack.server {
+    component hydrotrack.server.api
+    component hydrotrack.server.service
+    component hydrotrack.server.dal
+}
+
+component hydrotrack.messaging {
+    component hydrotrack.messaging.api
+    component hydrotrack.messaging.nuts
+}
+
+hydrotrack.server ..> hydrotrack.core : "use"
+hydrotrack.client ..> hydrotrack.core : "use"
+hydrotrack.messaging ..> hydrotrack.core : "use"
+hydrotrack.server.service ..> hydrotrack.messaging : "use"
+@enduml
