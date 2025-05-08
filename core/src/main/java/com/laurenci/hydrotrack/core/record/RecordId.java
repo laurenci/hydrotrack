@@ -3,11 +3,12 @@ package com.laurenci.hydrotrack.core.record;
 import com.laurenci.hydrotrack.core.drink.system.Drink;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-public class RecordId {
+public class RecordId implements Serializable {
     private Long userId;
-    private Drink drink;
+    private Long drinkId;
     private LocalDateTime date;
 }

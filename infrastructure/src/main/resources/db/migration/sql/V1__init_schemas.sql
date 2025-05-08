@@ -1,34 +1,3 @@
--- Create Enums using ENUM type in MariaDB
--- Enum for sex
-CREATE TABLE sex_enum
-(
-    sex ENUM('male', 'female', 'uncertain', 'other') NOT NULL
-);
-
--- Enum for drink_group
-CREATE TABLE drink_group_enum
-(
-    drink_group ENUM('basic', 'tea', 'coffee', 'enegry_drink') NOT NULL
-);
-
--- Enum for drink_area
-CREATE TABLE drink_area_enum
-(
-    drink_area ENUM('system', 'custom') NOT NULL
-);
-
--- Enum for achievement_status
-CREATE TABLE achievement_status_enum
-(
-    achievement_status ENUM('enabled', 'disabled') NOT NULL
-);
-
--- Enum for progress_status
-CREATE TABLE progress_status_enum
-(
-    progress_status ENUM('not_started', 'in_progress', 'obtained') NOT NULL
-);
-
 -- Users Table
 CREATE TABLE users
 (
@@ -51,7 +20,7 @@ CREATE TABLE profile
 -- Drinks Table
 CREATE TABLE drinks
 (
-    id    INT PRIMARY KEY,
+    id    INT PRIMARY KEY AUTO_INCREMENT,
     type  VARCHAR(48) NOT NULL,
     brand VARCHAR(48),
     name  VARCHAR(48) NOT NULL
@@ -60,7 +29,7 @@ CREATE TABLE drinks
 -- Custom Drinks Table
 CREATE TABLE custom_drinks
 (
-    id      INT PRIMARY KEY,
+    id      INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT         NOT NULL,
     type    VARCHAR(48) NOT NULL,
     brand   VARCHAR(48),
@@ -72,7 +41,7 @@ CREATE TABLE custom_drinks
 CREATE TABLE drink_types
 (
     type    VARCHAR(48) PRIMARY KEY,
-    `group` ENUM('basic', 'tea', 'coffee', 'enegry_drink') NOT NULL
+    `group` ENUM('basic', 'tea', 'coffee', 'energy_drink') NOT NULL
 );
 
 -- Add foreign keys for drink types
@@ -89,19 +58,13 @@ CREATE TABLE records
     drink_id INT       NOT NULL,
     date     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     area     ENUM('system', 'custom') NOT NULL,
-    amount DOUBLE NOT NULL,
+    amount   DOUBLE NOT NULL,
     PRIMARY KEY (user_id, drink_id, date),
-    FOREIGN KEY (user_id) REFERENCES users (id),
-    -- Depending on which table drink_id belongs to, use one at a time:
-    -- For standard drinks:
-    FOREIGN KEY (drink_id) REFERENCES drinks (id),
-    -- OR for custom drinks:
-    -- FOREIGN KEY (drink_id) REFERENCES custom_drinks(id)
-    -- One FK is allowed; logic must decide what drink_area means
+    FOREIGN KEY (user_id) REFERENCES users (id)
+    -- Conditional FK handled via trigger
 );
 
-DELIMITER
-//
+DELIMITER //
 
 CREATE TRIGGER validate_record_insert
     BEFORE INSERT
@@ -109,29 +72,28 @@ CREATE TRIGGER validate_record_insert
     FOR EACH ROW
 BEGIN
     IF NEW.area = 'system' THEN
-    IF NOT EXISTS (
-      SELECT 1 FROM drinks WHERE id = NEW.drink_id
-    ) THEN
-      SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Invalid drink_id for system area';
+        IF NOT EXISTS (
+            SELECT 1 FROM drinks WHERE id = NEW.drink_id
+        ) THEN
+            SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Invalid drink_id for system area';
 END IF;
 ELSEIF
 NEW.area = 'custom' THEN
-    IF NOT EXISTS (
-      SELECT 1 FROM custom_drinks WHERE id = NEW.drink_id AND user_id = NEW.user_id
-    ) THEN
-      SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Invalid drink_id for custom area or not owned by user';
+        IF NOT EXISTS (
+            SELECT 1 FROM custom_drinks WHERE id = NEW.drink_id AND user_id = NEW.user_id
+        ) THEN
+            SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Invalid drink_id for custom area or not owned by user';
 END IF;
 ELSE
-    SIGNAL SQLSTATE '45000'
-      SET MESSAGE_TEXT = 'Invalid area value';
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Invalid area value';
 END IF;
 END
 //
 
 DELIMITER ;
-
 
 -- Reports Table
 CREATE TABLE reports
@@ -139,7 +101,7 @@ CREATE TABLE reports
     user_id INT  NOT NULL,
     date    DATE NOT NULL DEFAULT CURRENT_DATE,
     expected_daily_amount DOUBLE NOT NULL DEFAULT 0,
-    actual_daily_amount DOUBLE NOT NULL DEFAULT 0,
+    actual_daily_amount   DOUBLE NOT NULL DEFAULT 0,
     PRIMARY KEY (user_id, date),
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
@@ -147,7 +109,7 @@ CREATE TABLE reports
 -- Achievements Table
 CREATE TABLE achievements
 (
-    id          INT PRIMARY KEY,
+    id          INT PRIMARY KEY AUTO_INCREMENT,
     name        VARCHAR(48)  NOT NULL,
     description VARCHAR(256) NOT NULL,
     className   VARCHAR(64)  NOT NULL,
@@ -160,7 +122,7 @@ CREATE TABLE users_achievements
     user_id        INT NOT NULL,
     achievement_id INT NOT NULL,
     progress       JSON,
-    date           TIMESTAMP,
+    date           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     status         ENUM('not_started', 'in_progress', 'obtained') NOT NULL,
     PRIMARY KEY (user_id, achievement_id),
     FOREIGN KEY (user_id) REFERENCES users (id),
