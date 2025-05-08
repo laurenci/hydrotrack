@@ -12,22 +12,30 @@ public class CustomDrinkService {
     private final CustomDrinkRepository repository;
 
     public CustomDrinkDto addNewCustomDrink(NewCustomDrinkDto newCustomDrink) {
-        return null;
+        return CustomDrinkMapper.INSTANCE.fromModelToDto(
+                repository.create(CustomDrinkMapper.INSTANCE.fromNewDtoToModel(newCustomDrink))
+        );
     }
 
     public List<CustomDrinkDto> getCustomDrinksByType(String type) {
-        return null;
+        return repository.findByType(type).stream()
+                .map(CustomDrinkMapper.INSTANCE::fromModelToDto)
+                .toList();
     }
 
-    public List<CustomDrinkDto> getCustomDrinksByGroup(DrinkGroup group) {
-        return null;
+    public List<CustomDrinkDto> getCustomDrinksByGroup(String group) {
+        return repository.findByGroup(group).stream()
+                .map(CustomDrinkMapper.INSTANCE::fromModelToDto)
+                .toList();
     }
 
     public CustomDrinkDto editCustomDrink(CustomDrinkDto editedCustomDrink) {
-        return null;
+        return CustomDrinkMapper.INSTANCE.fromModelToDto(
+                repository.update(CustomDrinkMapper.INSTANCE.fromDtoToModel(editedCustomDrink))
+        );
     }
 
     public void deleteCustomDrinkById(Long customDrinkId) {
-
+        repository.deleteById(customDrinkId);
     }
 }

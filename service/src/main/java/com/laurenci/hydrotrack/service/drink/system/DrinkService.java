@@ -12,10 +12,14 @@ public class DrinkService {
     private final DrinkRepository repository;
 
     public List<DrinkDto> getDrinksByType(String type) {
-        return null;
+        return repository.findByType(type).stream()
+                .map(DrinkMapper.INSTANCE::fromModelToDto)
+                .toList();
     }
 
-    public List<DrinkDto> getDrinksByGroup(DrinkGroup group) {
-        return null;
+    public List<DrinkDto> getDrinksByGroup(String group) {
+        return repository.findByGroup(group).stream()
+                .map(DrinkMapper.INSTANCE::fromModelToDto)
+                .toList();
     }
 }

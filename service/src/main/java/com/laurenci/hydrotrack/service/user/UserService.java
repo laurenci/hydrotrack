@@ -1,26 +1,32 @@
 package com.laurenci.hydrotrack.service.user;
 
+import lombok.AllArgsConstructor;
 
 import com.laurenci.hydrotrack.core.user.UserRepository;
-import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class UserService {
     private final UserRepository repository;
 
     public UserDto addNewUser(NewUserDto newUser) {
-        return null;
+        return UserMapper.INSTANCE.fromModelToDto(
+                repository.create(UserMapper.INSTANCE.fromNewDtoToModel(newUser))
+        );
     }
 
     public UserDto getUserById(Long userId) {
-        return null;
+        return UserMapper.INSTANCE.fromModelToDto(
+                repository.readById(userId)
+        );
     }
 
     public UserDto editUser(UserDto editedUser) {
-        return null;
+        return UserMapper.INSTANCE.fromModelToDto(
+                repository.update(UserMapper.INSTANCE.fromDtoToModel(editedUser))
+        );
     }
 
     public UserDto calculateDailyAmount(BodyInfoDto bodyInfoDto) {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

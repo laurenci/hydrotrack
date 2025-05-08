@@ -12,10 +12,12 @@ public class ReportService {
     private final ReportRepository repository;
 
     public List<ReportDto> getReportsByUserId(Long userId) {
-        return null;
+        return repository.findByUserId(userId).stream()
+                .map(ReportMapper.INSTANCE::fromModelToDto)
+                .toList();
     }
 
     public List<ReportDto> getReportsByPeriodOfTime(LocalDate from, LocalDate to) {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
