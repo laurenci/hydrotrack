@@ -1,6 +1,6 @@
 @startuml
 class User {
-    - Integer id
+    - Long id
     - String username
     - Double expectedDailyAmount
     - Profile profile
@@ -9,7 +9,7 @@ class User {
 }
 
 class Profile {
-    - Integer userId
+    - Long userId
     - String firstName
     - String lastName
     - Sex sex
@@ -29,7 +29,7 @@ User *-- Profile
 Profile o-- Sex 
 
 class Drink {
-    - Integer id
+    - Long id
     - DrinkType type
     - String brand
     - String name
@@ -38,7 +38,7 @@ class Drink {
 }
 
 class CustomDrink {
-    - Integer userId
+    - Long userId
     --
     JavaBean's methods and conctructors
 }
@@ -77,8 +77,8 @@ enum DrinkArea {
 Record o-- DrinkArea
 
 class RecordId {
-    - Integer userId
-    - Drink drink
+    - Long userId
+    - Long drinkId
     - LocalDateTime date
     --
     JavaBean's methods and conctructors
@@ -94,7 +94,7 @@ class Report {
 }
 
 class ReportId {
-    - Integer userId
+    - Long userId
     - LocalDate date
     --
     JavaBean's methods and conctructors
