@@ -1,5 +1,6 @@
 package com.laurenci.hydrotrack.infrastructure.dal.drink;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -7,6 +8,7 @@ import com.laurenci.hydrotrack.core.drink.DrinkType;
 import com.laurenci.hydrotrack.core.drink.DrinkTypeRepository;
 
 @Repository
+@Transactional
 @AllArgsConstructor
 public class ConcreteDrinkTypeRepository implements DrinkTypeRepository {
     private final DrinkTypeRepositoryJpa drinkTypeRepositoryJpa;

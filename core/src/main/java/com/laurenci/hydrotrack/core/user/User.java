@@ -6,6 +6,6 @@ import lombok.Data;
 public class User {
     private Long id;
     private String username;
-    private Double expectedDailyAmount;
-    private Profile profile;
+    private Double expectedDailyAmount = 0.0;
+    private Profile profile = new Profile();
 }

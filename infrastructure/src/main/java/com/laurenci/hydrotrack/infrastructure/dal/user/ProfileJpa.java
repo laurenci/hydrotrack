@@ -14,6 +14,8 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 import com.laurenci.hydrotrack.core.user.Sex;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Table(name = "profile")
@@ -26,6 +28,8 @@ public class ProfileJpa {
     @OneToOne
     @MapsId
     @JoinColumn(name = "user_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private UserJpa user;
 
     @Column(name = "first_name", length = 32)
@@ -36,7 +40,7 @@ public class ProfileJpa {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Sex sex = Sex.UNCERTAIN;
+    private Sex sex;
 
     @Column(name = "birthday_date")
     private LocalDate birthdayDate;

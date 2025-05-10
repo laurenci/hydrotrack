@@ -2,6 +2,7 @@ package com.laurenci.hydrotrack.infrastructure.dal.report;
 
 import java.util.List;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +11,7 @@ import com.laurenci.hydrotrack.core.report.ReportId;
 import com.laurenci.hydrotrack.core.report.ReportRepository;
 
 @Repository
+@Transactional
 @AllArgsConstructor
 public class ConcreteReportRepository implements ReportRepository {
     private final ReportRepositoryJpa reportRepositoryJpa;

@@ -1,5 +1,6 @@
 package com.laurenci.hydrotrack.infrastructure.dal.user;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -7,6 +8,7 @@ import com.laurenci.hydrotrack.core.user.User;
 import com.laurenci.hydrotrack.core.user.UserRepository;
 
 @Repository
+@Transactional
 @AllArgsConstructor
 public class ConcreteUserRepository implements UserRepository {
     private final UserRepositoryJpa userRepositoryJpa;

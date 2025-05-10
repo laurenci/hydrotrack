@@ -3,9 +3,9 @@ package com.laurenci.hydrotrack.infrastructure.dal.user;
 import jakarta.persistence.Column;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -22,7 +22,8 @@ public class UserJpa {
     @Column(name = "daily_amount", nullable = false)
     private Double expectedDailyAmount;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)
+    @PrimaryKeyJoinColumn
     private ProfileJpa profile;
 }
 

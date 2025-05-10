@@ -9,6 +9,6 @@ public class Profile {
     private Long userId;
     private String firstName;
     private String lastName;
-    private Sex sex;
+    private Sex sex = Sex.UNCERTAIN;
     private LocalDate birthdayDate;
 }
