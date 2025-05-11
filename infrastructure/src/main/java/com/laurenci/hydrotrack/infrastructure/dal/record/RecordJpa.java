@@ -1,35 +1,28 @@
 package com.laurenci.hydrotrack.infrastructure.dal.record;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-import com.laurenci.hydrotrack.core.record.RecordId;
 import com.laurenci.hydrotrack.core.drink.DrinkArea;
+import com.laurenci.hydrotrack.infrastructure.dal.drink.system.DrinkJpa;
 
 @Entity
 @Table(name = "records")
 @Data
-@IdClass(RecordId.class)
 public class RecordJpa {
-    @Id
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @EmbeddedId
+    private RecordIdJpa id;
 
-    @Id
-    @Column(name = "drink_id", nullable = false)
-    private Long drinkId;
-
-    @Id
-    @Column(nullable = false)
-    private LocalDateTime date;
+    @ManyToOne
+    @JoinColumn(name = "drink_id", nullable = false, insertable = false, updatable = false)
+    private DrinkJpa drink;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

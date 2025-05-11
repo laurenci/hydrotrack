@@ -1,5 +1,6 @@
 package com.laurenci.hydrotrack.infrastructure.dal.record;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.transaction.Transactional;
@@ -18,15 +19,18 @@ public class ConcreteRecordRepository implements RecordRepository {
 
     @Override
     public Record create(Record record) {
+        var mappedRecord =  RecordMapper.INSTANCE.fromModelToEntity(record);
+        mappedRecord.getId().setDate(LocalDateTime.now());
+
         return RecordMapper.INSTANCE.fromEntityToModel(
-                recordRepositoryJpa.save(RecordMapper.INSTANCE.fromModelToEntity(record))
+                recordRepositoryJpa.saveAndFlush(mappedRecord)
         );
     }
 
     @Override
     public Record readById(RecordId id) {
         return RecordMapper.INSTANCE.fromEntityToModel(
-                recordRepositoryJpa.findById(id).orElseThrow()
+                recordRepositoryJpa.findById(RecordIdMapper.INSTANCE.fromModelToEntity(id)).orElseThrow()
         );
     }
 
@@ -40,7 +44,7 @@ public class ConcreteRecordRepository implements RecordRepository {
     @Override
     public Record deleteById(RecordId id) {
         var deleted = readById(id);
-        recordRepositoryJpa.deleteById(id);
+        recordRepositoryJpa.deleteById(RecordIdMapper.INSTANCE.fromModelToEntity(id));
         return deleted;
     }
 

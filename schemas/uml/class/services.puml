@@ -47,37 +47,36 @@ UserService --> UserDto
 UserService --> BodyInfoDto
 
 class DrinkService {
-    + getDrinksByType(String type) : List<DrinkDto>
-    + getDrinksByGroup(DrinkGroup group) : List<DrinkDto>
+    + getDrinksByDrinkType(DrinkType drinkType) : List<DrinkDto>
 }
 
 class DrinkDto <<record>> {
     - Long id
-    - DrinkTypeDto type
+    - DrinkType type
     - String brand
     - String name
     
 }
 
-class DrinkTypeDto <<record>> {
+class DrinkType <<core>> {
     - String type
     - DrinkGroup group
 }
 
-DrinkDto o-- DrinkTypeDto
+DrinkDto o-- DrinkType
 DrinkService --> DrinkDto
 
 class CustomDrinkService {
     + addNewCustomDrink(NewCustomDrinkDto newCustomDrink) : CustomDrinkDto
     + editCustomDrink(CustomDrinkDto editedCustomDrink) : CustomDrinkDto
     + deleteCustomDrinkById(Long customDrinkId)
-    + getCustomDrinksByType(String type) : List<CustomDrinkDto>
-    + getCustomDrinksByGroup(DrinkGroup group) : List<CustomDrinkDto>
+    + getCustomDrinksByUserId(Long userId)) : List<CustomDrinkDto>
+    + getCustomDrinksByUserIdAndDrinkType(Long userId, DrinkType drinkType) : List<CustomDrinkDto>
 }
 
 class NewCustomDrinkDto <<record>> {
     - Long userId
-    - DrinkTypeDto type
+    - DrinkType type
     - String brand
     - String name
 }
@@ -85,20 +84,21 @@ class NewCustomDrinkDto <<record>> {
 class CustomDrinkDto <<record>> {
     - Long id
     - Long userId
-    - DrinkTypeDto type
+    - DrinkType type
     - String brand
     - String name
 }
 
-NewCustomDrinkDto  o-- DrinkTypeDto
-CustomDrinkDto o-- DrinkTypeDto
+NewCustomDrinkDto  o-- DrinkType
+CustomDrinkDto o-- DrinkType
 
 CustomDrinkService --> NewCustomDrinkDto
 CustomDrinkService --> CustomDrinkDto
+CustomDrinkService --> DrinkType
 
 class RecordService {
     + addNewRecord(NewRecordDto newRecord) : RecordDto
-    + editRecord(RecordDto editedRecord) : RecordDto
+    + editRecord(EditRecordDto editedRecord) : RecordDto
     + deleteRecordById(RecordIdDto recordId)
     + getRecordsByUserId(Long userId) : List<RecordDto>
 }
@@ -112,7 +112,22 @@ class NewRecordDto <<record>> {
 
 class RecordDto <<record>> {
     - Long userId
-    - DrinkDto drink
+    - Long drinkId
+    - RecordDrinkDataDto drinkData
+    - DrinkArea area
+    - LocalDateTime date
+    - Double amount
+}
+
+class RecordDrinkDataDto <<record>> {
+    - String name
+    - String brand
+    - DrinkType type
+}
+
+class EditRecordDto <<record>> {
+    - Long userId
+    - Long drinkId
     - DrinkArea area
     - LocalDateTime date
     - Double amount
@@ -123,12 +138,15 @@ enum DrinkArea {
     CUSTOM
 }
 
+RecordDto *-- RecordDrinkDataDto
+RecordDrinkDataDto o-- DrinkType
+
 NewRecordDto o-- DrinkArea
 RecordDto o-- DrinkArea
-RecordDto o-- DrinkDto
 
 RecordService --> NewRecordDto
 RecordService --> RecordDto
+RecordService --> EditRecordDto
 
 class ReportService {
     + getReportsById(ReportIdDto reportId) : List<ReportDto>

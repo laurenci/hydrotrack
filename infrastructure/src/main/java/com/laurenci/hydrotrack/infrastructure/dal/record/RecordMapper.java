@@ -6,7 +6,7 @@ import org.mapstruct.factory.Mappers;
 import com.laurenci.hydrotrack.core.record.Record;
 import com.laurenci.hydrotrack.infrastructure.mapper.GeneralMapper;
 
-@Mapper
+@Mapper(uses = {RecordIdMapper.class})
 public interface RecordMapper extends GeneralMapper<Record, RecordJpa> {
     RecordMapper INSTANCE = Mappers.getMapper(RecordMapper.class);
 }

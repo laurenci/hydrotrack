@@ -1,12 +1,9 @@
 package com.laurenci.hydrotrack.infrastructure.controller.drink;
 
-import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,16 +24,6 @@ public class CustomDrinkController {
     @PostMapping
     public ResponseEntity<CustomDrinkDto> addNewCustomDrink(@RequestBody NewCustomDrinkDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(customDrinkService.addNewCustomDrink(dto));
-    }
-
-    @GetMapping("/type/{type}")
-    public ResponseEntity<List<CustomDrinkDto>> getCustomDrinksByType(@PathVariable String type) {
-        return ResponseEntity.ok(customDrinkService.getCustomDrinksByType(type));
-    }
-
-    @GetMapping("/group/{group}")
-    public ResponseEntity<List<CustomDrinkDto>> getCustomDrinksByGroup(@PathVariable String group) {
-        return ResponseEntity.ok(customDrinkService.getCustomDrinksByGroup(group));
     }
 
     @PutMapping

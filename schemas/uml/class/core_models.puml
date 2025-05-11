@@ -63,7 +63,8 @@ DrinkType o-- DrinkGroup
 
 class Record {
     - RecordId id
-    - DrinkArea drinkArea
+    - Drink drink
+    - DrinkArea area
     - Double amount
     --
     JavaBean's methods and conctructors

@@ -4,8 +4,8 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 
+import com.laurenci.hydrotrack.core.drink.DrinkType;
 import com.laurenci.hydrotrack.core.drink.custom.CustomDrinkRepository;
-import com.laurenci.hydrotrack.core.drink.DrinkGroup;
 
 @AllArgsConstructor
 public class CustomDrinkService {
@@ -17,14 +17,14 @@ public class CustomDrinkService {
         );
     }
 
-    public List<CustomDrinkDto> getCustomDrinksByType(String type) {
-        return repository.findByType(type).stream()
+    public List<CustomDrinkDto> getCustomDrinksByUserId(Long userId) {
+        return repository.findByUserId(userId).stream()
                 .map(CustomDrinkMapper.INSTANCE::fromModelToDto)
                 .toList();
     }
 
-    public List<CustomDrinkDto> getCustomDrinksByGroup(String group) {
-        return repository.findByGroup(group).stream()
+    public List<CustomDrinkDto> getCustomDrinksByUserIdAndDrinkType(Long userId, DrinkType drinkType) {
+        return repository.findByUserIdAndDrinkType(userId, drinkType).stream()
                 .map(CustomDrinkMapper.INSTANCE::fromModelToDto)
                 .toList();
     }

@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import com.laurenci.hydrotrack.core.drink.DrinkType;
 import com.laurenci.hydrotrack.core.drink.custom.CustomDrink;
 import com.laurenci.hydrotrack.core.drink.custom.CustomDrinkRepository;
 
@@ -42,15 +43,15 @@ public class ConcreteCustomDrinkRepository implements CustomDrinkRepository {
     }
 
     @Override
-    public List<CustomDrink> findByType(String type) {
-        return drinkRepositoryJpa.findByType(type).stream()
+    public List<CustomDrink> findByUserId(Long userId) {
+        return drinkRepositoryJpa.findByUserId(userId).stream()
                 .map(CustomDrinkMapper.INSTANCE::fromEntityToModel)
                 .toList();
     }
 
     @Override
-    public List<CustomDrink> findByGroup(String group) {
-        return drinkRepositoryJpa.findByGroup(group).stream()
+    public List<CustomDrink> findByUserIdAndDrinkType(Long userId, DrinkType drinkType) {
+        return drinkRepositoryJpa.findByUserIdAndOptionalTypeAndGroup(userId, drinkType.getType(), drinkType.getGroup()).stream()
                 .map(CustomDrinkMapper.INSTANCE::fromEntityToModel)
                 .toList();
     }

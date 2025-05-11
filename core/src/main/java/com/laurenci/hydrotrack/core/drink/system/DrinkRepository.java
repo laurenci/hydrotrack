@@ -1,6 +1,10 @@
 package com.laurenci.hydrotrack.core.drink.system;
 
-import com.laurenci.hydrotrack.core.drink.GeneralDrinkRepository;
+import java.util.List;
 
-public interface DrinkRepository extends GeneralDrinkRepository<Drink> {
+import com.laurenci.hydrotrack.core.Repository;
+import com.laurenci.hydrotrack.core.drink.DrinkType;
+
+public interface DrinkRepository extends Repository<Drink, Long> {
+    List<Drink> findByDrinkType(DrinkType drinkGroup);
 }

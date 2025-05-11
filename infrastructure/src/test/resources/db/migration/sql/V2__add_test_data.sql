@@ -37,3 +37,22 @@ VALUES (1, 'Chamomile', NULL, 'Chamomile Relax'),
        (3, 'Green Tea', NULL, 'Homemade Green'),
        (4, 'Monster', 'Monster Energy', 'Ultra Sunrise'),
        (5, 'Espresso', 'Lavazza', 'Double Espresso');
+
+-- SYSTEM records
+INSERT INTO records (user_id, drink_id, area, amount, date)
+VALUES
+    (1, 1, 'SYSTEM', 0.5, '2025-05-10 08:15:00'),  -- Coke Classic
+    (1, 3, 'SYSTEM', 0.25, '2025-05-10 12:00:00'), -- Natural Spring
+    (2, 2, 'SYSTEM', 0.3, '2025-05-09 09:30:00'),  -- Orange Juice
+    (3, 5, 'SYSTEM', 0.4, '2025-05-08 10:45:00'),  -- Lipton Green
+    (4, 4, 'SYSTEM', 0.5, '2025-05-10 14:20:00'),  -- Red Bull
+    (5, 3, 'SYSTEM', 1.0, '2025-05-11 07:00:00');  -- Natural Spring
+
+-- CUSTOM records
+INSERT INTO records (user_id, drink_id, area, amount, date)
+VALUES
+    (1, 1, 'CUSTOM', 0.2, '2025-05-10 18:10:00'), -- Chamomile Relax
+    (2, 2, 'CUSTOM', 0.3, '2025-05-09 15:45:00'), -- Vanilla Cold Brew
+    (3, 3, 'CUSTOM', 0.25, '2025-05-08 20:05:00'),-- Homemade Green
+    (4, 4, 'CUSTOM', 0.5, '2025-05-10 22:30:00'), -- Ultra Sunrise
+    (5, 5, 'CUSTOM', 0.75, '2025-05-11 09:00:00');-- Double Espresso
