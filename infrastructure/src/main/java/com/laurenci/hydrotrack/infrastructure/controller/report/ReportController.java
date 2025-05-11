@@ -31,6 +31,6 @@ public class ReportController {
             @PathVariable("id") Long userId,
             @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
-        return ResponseEntity.ok(reportService.getReportsByPeriodOfTime(userId, from, to));
+        return ResponseEntity.ok(reportService.getReportsByUserIdAndPeriodOfTime(userId, from, to));
     }
 }

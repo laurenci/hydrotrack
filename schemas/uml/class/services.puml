@@ -151,7 +151,7 @@ RecordService --> EditRecordDto
 class ReportService {
     + getReportsById(ReportIdDto reportId) : List<ReportDto>
     + getReportsByUserId(Long userId) : List<ReportDto>
-    + getReportsByPeriodOfTime(LocalDate form, LocalDate to) : List<ReportDto>
+    + getReportsByUserIdAndPeriodOfTime(Long userId, LocalDate from, LocalDate to) : List<ReportDto>
 }
 
 class ReportDto {
