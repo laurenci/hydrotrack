@@ -16,20 +16,21 @@ import com.laurenci.hydrotrack.service.report.ReportDto;
 import com.laurenci.hydrotrack.service.report.ReportService;
 
 @RestController
-@RequestMapping("/reports")
+@RequestMapping("/users/{id}/reports")
 @RequiredArgsConstructor
 public class ReportController {
     private final ReportService reportService;
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<ReportDto>> getReportsByUserId(@PathVariable Long userId) {
+    @GetMapping
+    public ResponseEntity<List<ReportDto>> getReportsByUserId(@PathVariable("id") Long userId) {
         return ResponseEntity.ok(reportService.getReportsByUserId(userId));
     }
 
-    @GetMapping("/range")
+    @GetMapping("/search")
     public ResponseEntity<List<ReportDto>> getReportsByPeriod(
+            @PathVariable("id") Long userId,
             @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
-        return ResponseEntity.ok(reportService.getReportsByPeriodOfTime(from, to));
+        return ResponseEntity.ok(reportService.getReportsByPeriodOfTime(userId, from, to));
     }
 }

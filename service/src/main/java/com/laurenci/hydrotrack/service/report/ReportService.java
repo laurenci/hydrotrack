@@ -17,7 +17,7 @@ public class ReportService {
                 .toList();
     }
 
-    public List<ReportDto> getReportsByPeriodOfTime(LocalDate from, LocalDate to) {
+    public List<ReportDto> getReportsByPeriodOfTime(Long userId, LocalDate from, LocalDate to) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

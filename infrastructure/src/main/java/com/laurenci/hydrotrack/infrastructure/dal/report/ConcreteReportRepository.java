@@ -26,7 +26,7 @@ public class ConcreteReportRepository implements ReportRepository {
     @Override
     public Report readById(ReportId id) {
         return ReportMapper.INSTANCE.fromEntityToModel(
-                reportRepositoryJpa.findById(id).orElseThrow()
+                reportRepositoryJpa.findById(ReportIdMapper.INSTANCE.fromModelToEntity(id)).orElseThrow()
         );
     }
 
@@ -40,7 +40,7 @@ public class ConcreteReportRepository implements ReportRepository {
     @Override
     public Report deleteById(ReportId id) {
         var deleted = readById(id);
-        reportRepositoryJpa.deleteById(id);
+        reportRepositoryJpa.deleteById(ReportIdMapper.INSTANCE.fromModelToEntity(id));
         return deleted;
     }
 
@@ -51,4 +51,3 @@ public class ConcreteReportRepository implements ReportRepository {
                 .toList();
     }
 }
-
