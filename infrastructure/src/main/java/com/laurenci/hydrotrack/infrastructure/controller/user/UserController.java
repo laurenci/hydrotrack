@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.laurenci.hydrotrack.service.user.BodyInfoDto;
 import com.laurenci.hydrotrack.service.user.NewUserDto;
 import com.laurenci.hydrotrack.service.user.UserDto;
 import com.laurenci.hydrotrack.service.user.UserService;
@@ -35,11 +34,6 @@ public class UserController {
     @PutMapping
     public ResponseEntity<UserDto> editUser(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(userService.editUser(userDto));
-    }
-
-    @PostMapping("/{id}/calculate-daily-amount")
-    public ResponseEntity<UserDto> calculateDailyAmount(@PathVariable Long id, @RequestBody BodyInfoDto bodyInfoDto) {
-        return ResponseEntity.ok(userService.calculateDailyAmount(bodyInfoDto));
     }
 }
 

@@ -102,4 +102,17 @@ class ReportId {
 }
 
 Report *-- ReportId
+
+enum ActivityLevel {
+    - Integer mlPerKg
+    - ActivityLevel(Integer mlPerKg)
+    --
+    LOW(36)
+    MODERATE(40)
+    HIGH(46)
+}
+
+class AgeCorrectionCoefficient {
+    {static} getCoefficient(Integer age) : Double
+}
 @enduml

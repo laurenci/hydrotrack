@@ -29,5 +29,10 @@ public class DrinkController {
         typeDto.setGroup(group);
         return ResponseEntity.ok(drinkService.getDrinksByDrinkType(typeDto));
     }
+
+    @GetMapping
+    public  ResponseEntity<List<DrinkDto>> getAllDrinks() {
+        return ResponseEntity.ok(drinkService.getAllDrinks());
+    }
 }
 

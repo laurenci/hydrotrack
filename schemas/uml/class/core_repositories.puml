@@ -12,6 +12,7 @@ interface UserRepository<User, Integer> {
 
 interface DrinkRepository<Drink, Integer> {
     {abstract} findByDrinkType(DrinkType drinkGroup) : List<Drink>
+    {abstract} findAll() : List<Drink>
 }
 
 interface CustomDrinkRepository<CustomDrink, Integer> {
@@ -25,6 +26,7 @@ interface DrinkTypeRepository<DrinkType, String> {
 
 interface RecordRepository<Record, RecordId> {
     {abstract} findByUserId(Integer userId) : List<Record>
+    {abstract} findByUserIdAndDateRange(Long userId, LocalDateTime from, LocalDateTime to) : List<Record>
 }
 
 interface ReportRepository<Report, ReportId> {

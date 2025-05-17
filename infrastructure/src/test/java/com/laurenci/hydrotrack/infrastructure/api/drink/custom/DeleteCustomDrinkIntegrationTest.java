@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class DeleteCustomDrinkIntegrationTest {
 
     @Container
-    static final MariaDBContainer<?> mariaDB = new MariaDBContainer<>("mariadb:10.5")
+    static final MariaDBContainer<?> mariaDB = new MariaDBContainer<>("mariadb:lts")
             .withDatabaseName("testdb")
             .withUsername("test")
             .withPassword("test");

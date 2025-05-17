@@ -1,14 +1,9 @@
-package com.laurenci.hydrotrack.infrastructure.api.user;
+package com.laurenci.hydrotrack.infrastructure.api.drink.system;
 
-import com.laurenci.hydrotrack.core.user.User;
-import com.laurenci.hydrotrack.core.user.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -16,18 +11,18 @@ import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 @AutoConfigureMockMvc
-public class CalculateDailyAmountIntegrationTest {
-
+public class GetAllDrinksIntegrationTest {
     @Container
-    static MariaDBContainer<?> mariaDB = new MariaDBContainer<>("mariadb:10.5")
+    static MariaDBContainer<?> mariaDB = new MariaDBContainer<>("mariadb:lts")
             .withDatabaseName("testdb")
             .withUsername("test")
             .withPassword("test");
@@ -42,33 +37,14 @@ public class CalculateDailyAmountIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @BeforeEach
-    void setup() {
-        var user = new User();
-        user.setId(1L);
-        user.setUsername("existingUser");
-        userRepository.create(user);
-    }
-
-    @Disabled
     @Test
-    void shouldCalculateDailyAmount() throws Exception {
-        String bodyInfo = """
-            {
-                "height": 180,
-                "weight": 75,
-                "lifestyle": "ACTIVE"
-            }
-        """;
-
-        mockMvc.perform(post("/users/1/calculate-daily-amount")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(bodyInfo))
+    void shouldGetAllDrinks() throws Exception {
+        mockMvc.perform(get("/drinks"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1));
+                .andExpect(jsonPath("$", hasSize(greaterThan(0))))
+                .andExpect(jsonPath("$[*].id").exists())
+                .andExpect(jsonPath("$[*].name").exists())
+                .andExpect(jsonPath("$[*].brand").exists())
+                .andExpect(jsonPath("$[*].type").exists());
     }
 }
-

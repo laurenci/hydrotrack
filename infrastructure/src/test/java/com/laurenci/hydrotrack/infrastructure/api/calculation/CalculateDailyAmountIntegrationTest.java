@@ -1,5 +1,8 @@
-package com.laurenci.hydrotrack.infrastructure.api.user;
+package com.laurenci.hydrotrack.infrastructure.api.calculation;
 
+import com.laurenci.hydrotrack.core.user.User;
+import com.laurenci.hydrotrack.core.user.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,15 +15,14 @@ import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 @AutoConfigureMockMvc
-public class EditUserIntegrationTest {
+public class CalculateDailyAmountIntegrationTest {
 
     @Container
     static MariaDBContainer<?> mariaDB = new MariaDBContainer<>("mariadb:lts")
@@ -39,27 +41,26 @@ public class EditUserIntegrationTest {
     private MockMvc mockMvc;
 
     @Test
-    void shouldEditUser() throws Exception {
-        String updatedUser = """
+    void shouldCalculateDailyAmount() throws Exception {
+        String bodyInfo = """
                     {
-                        "id": 1,
-                        "username": "newName",
-                        "expectedDailyAmount": 3123.02,
-                        "profile": {
-                           "firstName": "string",
-                           "lastName": "string",
-                           "sex": "MALE"
-                        }
+                        "age": 21,
+                        "weight": 73,
+                        "activityLevel": "HIGH"
                     }
                 """;
 
-        mockMvc.perform(put("/users")
+        mockMvc.perform(post("/calculations/daily-amount")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(updatedUser))
+                        .content(bodyInfo))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("newName"))
-                .andExpect(jsonPath("$.profile.firstName").value("string"))
-                .andExpect(jsonPath("$.profile.lastName").value("string"))
-                .andExpect(jsonPath("$.profile.sex").value("MALE"));
+                .andExpect(result -> {
+                    try {
+                        Double.parseDouble(result.getResponse().getContentAsString());
+                    } catch (NumberFormatException e) {
+                        throw new AssertionError("Expected a double value in response", e);
+                    }
+                });
     }
 }
+

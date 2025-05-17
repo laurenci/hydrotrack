@@ -7,4 +7,5 @@ import com.laurenci.hydrotrack.core.drink.DrinkType;
 
 public interface DrinkRepository extends Repository<Drink, Long> {
     List<Drink> findByDrinkType(DrinkType drinkGroup);
+    List<Drink> findAll();
 }

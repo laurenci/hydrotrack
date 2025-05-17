@@ -11,6 +11,12 @@ import com.laurenci.hydrotrack.core.drink.system.DrinkRepository;
 public class DrinkService {
     private final DrinkRepository repository;
 
+    public List<DrinkDto> getAllDrinks() {
+        return repository.findAll().stream()
+                .map(DrinkMapper.INSTANCE::fromModelToDto)
+                .toList();
+    }
+
     public List<DrinkDto> getDrinksByDrinkType(DrinkType drinkType) {
         return repository.findByDrinkType(drinkType).stream()
                 .map(DrinkMapper.INSTANCE::fromModelToDto)

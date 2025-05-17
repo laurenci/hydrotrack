@@ -25,8 +25,4 @@ public class UserService {
                 repository.update(UserMapper.INSTANCE.fromDtoToModel(editedUser))
         );
     }
-
-    public UserDto calculateDailyAmount(BodyInfoDto bodyInfoDto) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 }

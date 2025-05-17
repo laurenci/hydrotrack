@@ -48,4 +48,11 @@ public class ConcreteDrinkRepository implements DrinkRepository {
                 .map(DrinkMapper.INSTANCE::fromEntityToModel)
                 .toList();
     }
+
+    @Override
+    public List<Drink> findAll() {
+        return drinkRepositoryJpa.findAll().stream()
+                .map(DrinkMapper.INSTANCE::fromEntityToModel)
+                .toList();
+    }
 }

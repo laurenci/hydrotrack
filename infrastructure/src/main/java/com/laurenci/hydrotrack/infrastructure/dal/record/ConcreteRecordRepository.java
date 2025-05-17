@@ -54,5 +54,12 @@ public class ConcreteRecordRepository implements RecordRepository {
                 .map(RecordMapper.INSTANCE::fromEntityToModel)
                 .toList();
     }
+
+    @Override
+    public List<Record> findByUserIdAndDateRange(Long userId, LocalDateTime from, LocalDateTime to) {
+        return recordRepositoryJpa.findByUserIdAndDateRange(userId, from, to).stream()
+                .map(RecordMapper.INSTANCE::fromEntityToModel)
+                .toList();
+    }
 }
 

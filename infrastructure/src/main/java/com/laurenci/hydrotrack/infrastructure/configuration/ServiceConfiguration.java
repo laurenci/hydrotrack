@@ -8,6 +8,7 @@ import com.laurenci.hydrotrack.core.drink.system.DrinkRepository;
 import com.laurenci.hydrotrack.core.record.RecordRepository;
 import com.laurenci.hydrotrack.core.report.ReportRepository;
 import com.laurenci.hydrotrack.core.user.UserRepository;
+import com.laurenci.hydrotrack.service.calculation.CalculationService;
 import com.laurenci.hydrotrack.service.drink.custom.CustomDrinkService;
 import com.laurenci.hydrotrack.service.drink.system.DrinkService;
 import com.laurenci.hydrotrack.service.record.RecordService;
@@ -28,8 +29,9 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public RecordService recordService(RecordRepository recordRepository) {
-        return new RecordService(recordRepository);
+    public RecordService recordService(RecordRepository recordRepository, DrinkRepository drinkRepository,
+                                       CustomDrinkRepository customDrinkRepository) {
+        return new RecordService(recordRepository, drinkRepository, customDrinkRepository);
     }
 
     @Bean
@@ -40,6 +42,11 @@ public class ServiceConfiguration {
     @Bean
     public CustomDrinkService customDrinkService(CustomDrinkRepository customDrinkRepository) {
         return new CustomDrinkService(customDrinkRepository);
+    }
+
+    @Bean
+    public CalculationService calculationService() {
+        return new CalculationService();
     }
 }
 
