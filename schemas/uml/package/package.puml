@@ -1,0 +1,27 @@
+@startuml
+skinparam linetype polyline
+skinparam componentStyle uml1
+
+
+package "Domain Model" as dm {
+    component hydrotrack.core
+    component hydrotrack.messaging.api
+}
+
+package "Domain Services" as ds {
+    component hydrotrack.service
+    component hydrotrack.messaging.service
+}
+
+
+
+package Infrastructure as infr {
+    component hydrotrack.infrastructure.api
+    component hydrotrack.infrastructure.dal
+    component hydrotrack.infrastructure.messaging
+}
+
+ds .down.> dm : "uses"
+infr .down.> ds : "uses"
+
+@enduml

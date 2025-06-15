@@ -1,0 +1,27 @@
+@startuml
+queue "MessageBroker Subject" as mb1
+participant Handler
+participant Publisher
+participant RecordAchievement
+participant AchievementNotifierMessageBrokerPublisher
+queue "MessageBroker Subject" as mb2
+
+mb1 ->> Handler : process message
+
+Handler -> Publisher : notifySubscribers(userId, event)
+activate Publisher
+loop iterate event subscribers
+    Publisher -> RecordAchievement : update(userId)
+    activate RecordAchievement
+    opt Has achievement been obtained?
+        RecordAchievement -> AchievementNotifierMessageBrokerPublisher : publish(name, description)
+            deactivate RecordAchievement
+        activate AchievementNotifierMessageBrokerPublisher
+        AchievementNotifierMessageBrokerPublisher -> mb2 : publish message
+        deactivate AchievementNotifierMessageBrokerPublisher
+    end
+    deactivate Publisher
+end
+
+
+@enduml

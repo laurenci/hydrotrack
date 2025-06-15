@@ -1,0 +1,43 @@
+services:
+  mariadb-node:
+    image: mariadb:lts
+    container_name: mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: password   # change this
+      MYSQL_DATABASE: hydrotrack      # optional
+      MYSQL_USER: server              # optional
+      MYSQL_PASSWORD: server          # optional
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+  nats-node:
+    image: nats:alpine3.21
+    container_name: nats
+    restart: unless-stopped
+    ports:
+      - "4222:4222"   # Client connections
+      - "8222:8222"   # HTTP monitoring (optional)
+    command: "-p 4222 -m 8222"
+
+  server-node:
+    build:
+      context: ./infrastructure
+      dockerfile: Dockerfile
+    container_name: hydrotrack_server
+    ports:
+      - "8080:8080"   # HTTP server port
+    depends_on:
+      mariadb-node:
+        condition: service_started
+      nats-node:
+        condition: service_started
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb-node:3306/hydrotrack
+      - SPRING_DATASOURCE_USERNAME=server
+      - SPRING_DATASOURCE_PASSWORD=server
+      - MESSAGING_NATS_URL=nats://nats-node:4222
+volumes:
+  mariadb_data:

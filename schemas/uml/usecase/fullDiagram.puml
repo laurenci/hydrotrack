@@ -1,0 +1,64 @@
+@startuml
+left to right direction
+skinparam linetype polyline
+skinparam nodesep 10
+
+:Користувач: as user
+
+package "Ведення особистої інформації" {
+    (Редагувати власний профіль) as edit_profile
+    (Розрахувати денну норму) as determine_daily_goal
+}
+
+package "Ведення статистики випотої рідини" {
+  (Редагувати кількість випитої рідини) as edit_records
+  (Додати новий запис) as add_new_record
+  (Змінити вже існуючий запис) as edit_record
+  (Видалити наявний запис) as delete_record
+  
+  (Переглянути записи за актуальний день) as search_records
+  (Переглянути звіти зі статистикою за минулий проміжок часу) as statistic_records
+  
+  (Редагувати власні напої) as edit_custom_drinks
+  (Додати новий напій) as add_new_drink
+  (Змінити вже існуючий напій) as edit_drink
+  (Видалити наявний напій) as delete_drink
+  
+  add_new_record .up.> edit_records : extends
+  edit_record .up.> edit_records : extends
+  delete_record .up.> edit_records : extends
+  
+  add_new_drink .up.> edit_custom_drinks : extends
+  edit_drink .up.> edit_custom_drinks : extends
+  delete_drink .up.> edit_custom_drinks : extends
+}
+
+
+
+package "Система досягнень" {
+  (Переглянути загальну статистику досягнень) as view_achievements_stats
+  (Переглянути список досягнень) as view_achievements_list
+  
+  (Переглянути окреме досягнення) as view_single_achievement
+  (Переглянути статус досягнення) as view_achievement_status
+  (Переглянути прогрес досягнення) as view_achievement_progress
+  usecase view_gained_achievement_precentage as "Переглянути відсоток користувачів, 
+  що здобули це досягнення"
+  
+  view_achievement_status .up.> view_single_achievement : include
+  view_achievement_progress .up.> view_single_achievement : include
+  view_gained_achievement_precentage .up.> view_single_achievement : include
+}
+
+user --> edit_profile
+user --> determine_daily_goal
+
+user --> edit_records
+user --> edit_custom_drinks
+user --> search_records
+user --> statistic_records
+
+user --> view_achievements_stats
+user --> view_achievements_list
+user --> view_single_achievement
+@enduml

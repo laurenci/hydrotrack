@@ -1,0 +1,46 @@
+@startuml
+interface Repository<T, ID> {
+    {abstract} create(T t) : T
+    {abstract} readById(ID id) : T
+    {abstract} update(T t) : T
+    {abstract} deleteById(ID id) : T
+}
+
+interface UserRepository<User, Integer> {
+
+}
+
+interface DrinkRepository<Drink, Integer> {
+    {abstract} findByDrinkType(DrinkType drinkGroup) : List<Drink>
+    {abstract} findAll() : List<Drink>
+}
+
+interface CustomDrinkRepository<CustomDrink, Integer> {
+    {abstract} findByUserId(Long userId) : List<CustomDrink>
+    {abstract} findByUserIdAndDrinkType(Long userId, DrinkType drinkType) : List<CustomDrink>
+}
+
+interface DrinkTypeRepository<DrinkType, String> {
+
+}
+
+interface RecordRepository<Record, RecordId> {
+    {abstract} findByUserId(Integer userId) : List<Record>
+    {abstract} findByUserIdAndDateRange(Long userId, LocalDateTime from, LocalDateTime to) : List<Record>
+}
+
+interface ReportRepository<Report, ReportId> {
+    {abstract} findByUserId(Integer userId) : List<Record>
+}
+
+Repository <|-up- UserRepository
+
+Repository <|-- DrinkRepository
+Repository <|-- CustomDrinkRepository
+
+Repository <|-- DrinkTypeRepository
+
+Repository <|-left- RecordRepository
+
+Repository <|-up- ReportRepository
+@enduml

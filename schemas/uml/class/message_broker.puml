@@ -1,0 +1,9 @@
+@startuml
+interface MessageBrokerPublisher {
+    + {abstract} publish(String subject, String message)
+}
+
+interface MessageBrokerSubscriber<T> {
+    + {abstract} subscribe(String subject, T handler)
+}
+@enduml

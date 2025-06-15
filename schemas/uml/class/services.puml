@@ -1,0 +1,182 @@
+@startuml
+class UserService {
+    - UserRepository repository
+    + addNewUser(NewUserDto newUser) : UserDto
+    + getUserById(Long userId) : UserDto
+    + editUser(UserDto editedUser) : UserDto
+}
+
+class NewUserDto <<record>> {
+    - Long id
+    - String username
+}
+
+class UserDto <<record>> {
+    - Long id
+    - String username
+    - ProfileDto profile
+    
+}
+
+class ProfileDto <<record>> {
+    - Long userId
+    - String firstName
+    - String lastName
+    - Sex sex
+    - LocalDate birthdayDate
+}
+
+UserDto o-- ProfileDto
+UserService --> NewUserDto
+UserService --> UserDto
+
+class CalculationService {
+    + determineDailyAmount(BodyInfoDto bodyInfo) : Double
+}
+
+class BodyInfoDto <<record>> {
+    - Integer age
+    - Double weight
+    - ActivityLevel activityLevel
+}
+
+enum ActivityLevel {
+    LOW
+    MODERATE
+    HIGH
+}
+
+BodyInfoDto o-- ActivityLevel
+CalculationService --> BodyInfoDto
+
+class DrinkService {
+    - DrinkRepository repository
+    + getAllDrinks() : List<DrinkDto>
+    + getDrinksByDrinkType(DrinkType drinkType) : List<DrinkDto>
+}
+
+class DrinkDto <<record>> {
+    - Long id
+    - DrinkType type
+    - String brand
+    - String name
+    
+}
+
+class DrinkType <<core>> {
+    - String type
+    - DrinkGroup group
+}
+
+DrinkDto o-- DrinkType
+DrinkService --> DrinkDto
+
+class CustomDrinkService {
+    - CustomDrinkRepository repository
+    + addNewCustomDrink(NewCustomDrinkDto newCustomDrink) : CustomDrinkDto
+    + editCustomDrink(CustomDrinkDto editedCustomDrink) : CustomDrinkDto
+    + deleteCustomDrinkById(Long customDrinkId)
+    + getCustomDrinksByUserId(Long userId)) : List<CustomDrinkDto>
+    + getCustomDrinksByUserIdAndDrinkType(Long userId, DrinkType drinkType) : List<CustomDrinkDto>
+}
+
+class NewCustomDrinkDto <<record>> {
+    - Long userId
+    - DrinkType type
+    - String brand
+    - String name
+}
+
+class CustomDrinkDto <<record>> {
+    - Long id
+    - Long userId
+    - DrinkType type
+    - String brand
+    - String name
+}
+
+NewCustomDrinkDto  o-- DrinkType
+CustomDrinkDto o-- DrinkType
+
+CustomDrinkService --> NewCustomDrinkDto
+CustomDrinkService --> CustomDrinkDto
+CustomDrinkService --> DrinkType
+
+class RecordService {
+    - RecordRepository repository
+    + addNewRecord(NewRecordDto newRecord) : RecordDto
+    + getRecordById(RecordId id) : RecordDto
+    + getRecordsByUserId(Long userId) : List<RecordDto>
+    + getRecordsByUserIdAndDateRange(Long userId, LocalDateTime from, LocalDateTime to) : List<RecordDto>
+    + editRecord(EditRecordDto editedRecord) : RecordDto
+    + deleteRecordById(RecordIdDto recordId)
+}
+
+class RecordId <<core>> {
+    - Long userId
+    - Long drinkId
+    - LocalDateTime date
+}
+
+class NewRecordDto <<record>> {
+    - Long userId
+    - Long drinkId
+    - DrinkArea area
+    - Double amount
+}
+
+class RecordDto <<record>> {
+    - Long userId
+    - Long drinkId
+    - RecordDrinkDataDto drinkData
+    - DrinkArea area
+    - LocalDateTime date
+    - Double amount
+}
+
+class RecordDrinkDataDto <<record>> {
+    - String name
+    - String brand
+    - DrinkType type
+}
+
+class EditRecordDto <<record>> {
+    - Long userId
+    - Long drinkId
+    - DrinkArea area
+    - LocalDateTime date
+    - Double amount
+}
+
+enum DrinkArea {
+    SYSTEM
+    CUSTOM
+}
+
+RecordDto *-- RecordDrinkDataDto
+RecordDrinkDataDto o-- DrinkType
+
+NewRecordDto o-- DrinkArea
+RecordDto o-- DrinkArea
+EditRecordDto o-- DrinkArea
+
+RecordService --> NewRecordDto
+RecordService --> RecordDto
+RecordService --> EditRecordDto
+RecordService --> RecordId
+
+class ReportService {
+    - ReportRepository repository
+    + getReportsById(ReportIdDto reportId) : List<ReportDto>
+    + getReportsByUserId(Long userId) : List<ReportDto>
+    + getReportsByUserIdAndPeriodOfTime(Long userId, LocalDate from, LocalDate to) : List<ReportDto>
+}
+
+class ReportDto {
+    - Double actualDailyAmount
+    - Double expectedDailyAmount
+    - LocalDate date
+}
+
+ReportService --> ReportDto
+@enduml

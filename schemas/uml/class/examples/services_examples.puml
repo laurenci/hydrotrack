@@ -1,0 +1,51 @@
+@startuml
+class UserService {
+    - UserRepository repository
+    + addNewUser(NewUserDto newUser) : UserDto
+    + getUserById(Long userId) : UserDto
+    + editUser(UserDto editedUser) : UserDto
+}
+
+class NewUserDto <<record>> {
+    - Long id
+    - String username
+}
+
+class UserDto <<record>> {
+    - Long id
+    - String username
+    - ProfileDto profile
+    
+}
+
+class ProfileDto <<record>> {
+    - Long userId
+    - String firstName
+    - String lastName
+    - Sex sex
+    - LocalDate birthdayDate
+}
+
+UserDto o-- ProfileDto
+UserService --> NewUserDto
+UserService --> UserDto
+
+class CalculationService {
+    + determineDailyAmount(BodyInfoDto bodyInfo) : Double
+}
+
+class BodyInfoDto <<record>> {
+    - Integer age
+    - Double weight
+    - ActivityLevel activityLevel
+}
+
+enum ActivityLevel {
+    LOW
+    MODERATE
+    HIGH
+}
+
+BodyInfoDto o-- ActivityLevel
+CalculationService --> BodyInfoDto
+@enduml

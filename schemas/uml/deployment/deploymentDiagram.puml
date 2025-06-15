@@ -1,0 +1,92 @@
+@startuml
+folder "Client" {
+    node userDevice <<device>> [
+        User's device
+    ]
+    
+    artifact telegram <<artifact>> [
+        Telegram Application
+    ]
+    
+    telegram ..> userDevice : "<i><<deploy>>"
+    
+    node botServer <<device>> [
+        Bot Server
+    ]
+    
+    artifact botServerJar <<artifact>> [
+        botServer.jar
+    ]
+    
+    botServerJar ..> botServer : "<i><<deploy>>"
+    
+    userDevice --> botServer : "MTProto" 
+}
+
+folder "Server" {
+    node webServer <<device>> [
+        Load Balancer
+    ]
+    
+    artifact nginx <<artifact>> [
+        Web Server Execution File
+    ]
+    
+    nginx ..> webServer : "<i><<deploy>>"
+    
+    node monoliteNode <<device>> [
+        Monolite node
+    ]
+    
+    artifact monoliteServer <<artifact>> [
+        server.jar
+    ]
+    
+    monoliteServer ..> monoliteNode : "<i><<deploy>>"
+    
+    webServer --> monoliteNode : "HTTP"
+}
+
+node messageBroker <<device>> [
+    Message Broker
+]
+
+artifact nats <<artifact>> [
+    Message Broker Client
+]
+
+
+nats .up.> messageBroker : "<i><<deploy>>"
+monoliteNode --> messageBroker : "Publish"
+botServer --> messageBroker : "Subscribe"
+messageBroker --> botServer : "Send"
+
+
+
+folder "Storage" {
+    node proxyServer <<device>> [
+        Proxy Server
+    ]
+    
+    artifact maxScale <<artifact>> [
+        MaxScale Execution File
+    ]
+    
+    maxScale ..> proxyServer : "<i><<deploy>>"
+    
+    node databaseNode <<device>> [
+        Database node
+    ]
+    
+    artifact rdbms <<artifact>> [
+        RDBMS MariaDB
+    ]
+    
+    rdbms ..> databaseNode : "<i><<deploy>>"
+    
+    proxyServer --> databaseNode : "TCP"
+}
+
+botServer -right-> webServer : "HTTPs"
+monoliteNode -right-> proxyServer : "TCP"
+@enduml
