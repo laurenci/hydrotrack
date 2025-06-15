@@ -3,36 +3,39 @@ interface Subscriber<T> {
     + {abstract} void update(T t)
 }
 
-abstract class Achievement<Integer> {
-    + {abstract} void update(Integer userId) : void
+abstract class Achievement<Long> {
+    # String name
+    # String description
+    + {abstract} void update(Long userId) : void
 }
 
 class RecordAchievement <<example>> {
-    + void update(Integer userId)
+    + void update(Long userId)
 }
 
 Subscriber <|.. Achievement
 Achievement <|-- RecordAchievement
 
-class Publisher<T, E extends Enum<E>, Sub extends Subscriber<T>> {
-    - Map<E, List<Sub>> subscribers
-    + addSubscriber(E event, Sub subscriber)
+class Publisher<T, E extends Enum<E>, S extends Subscriber<T>> {
+    - Map<E, List<S >> subscribers
+    + addSubscriber(E event, S subscriber)
     + notifySubscribers(T t, E event)
-    + {static} builder() : PublisherBuilder
 }
 
 Publisher o-- Subscriber
 
-class PublisherBuilder<T, E extends Enum<E>, Sub extends Subscriber<T>> {
-    - Map<E, List<Sub>> subscribers
+class PublisherBuilder<T, E extends Enum<E>, S extends Subscriber<T>> {
+    - Map<E, List<S >> subscribers
     + addEventEntry(E event) : PublisherEventEntryFiller
+    + setEventEntry(E event, List<S > subscribers) : PublisherBuilder
+    + addSubscribers(E event, List<S > subscribers) : PublisherBuilder
     + build() : Publisher
 }
 
-class PublisherEventEntryFiller<T, Sub extends Subscriber<T>> {
+class PublisherEventEntryFiller<T, S extends Subscriber<T>> {
     - PublisherBuilder publisherBuilder
-    - List<Sub> eventSubscribers
-    + addSubscriber(Sub subscriber) : PublisherEventEntryBuilder
+    - List<S > eventSubscribers
+    + addSubscriber(S subscriber) : PublisherEventEntryBuilder
     + close() : PublisherBuilder
 }
 

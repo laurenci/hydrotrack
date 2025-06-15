@@ -33,14 +33,14 @@ interface ReportRepository<Report, ReportId> {
     {abstract} findByUserId(Integer userId) : List<Record>
 }
 
-Repository <|-- UserRepository
+Repository <|-up- UserRepository
 
 Repository <|-- DrinkRepository
 Repository <|-- CustomDrinkRepository
 
 Repository <|-- DrinkTypeRepository
 
-Repository <|-- RecordRepository
+Repository <|-left- RecordRepository
 
-Repository <|-- ReportRepository
+Repository <|-up- ReportRepository
 @enduml

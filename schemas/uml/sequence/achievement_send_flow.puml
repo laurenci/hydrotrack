@@ -4,7 +4,7 @@ participant RecordController
 participant AchievementSupportRecordService
 participant RecordRepository
 participant RecordJpaRepository
-participant AchievementMessageBrokerService
+participant AchievementMessageBrokerPublisher
 queue "MessageBroker Subject" as mb
 database MariaDB
 
@@ -42,10 +42,10 @@ deactivate RecordJpaRepository
 RecordRepository --> AchievementSupportRecordService : return Record
 deactivate RecordRepository
 
-AchievementSupportRecordService -> AchievementMessageBrokerService : publish(userId, event)
-activate AchievementMessageBrokerService
-AchievementMessageBrokerService ->> mb : publish message
-deactivate AchievementMessageBrokerService
+AchievementSupportRecordService -> AchievementMessageBrokerPublisher : publish(userId, event)
+activate AchievementMessageBrokerPublisher
+AchievementMessageBrokerPublisher ->> mb : publish message
+deactivate AchievementMessageBrokerPublisher
 
 AchievementSupportRecordService --> RecordController : return RecordDto
 deactivate AchievementSupportRecordService

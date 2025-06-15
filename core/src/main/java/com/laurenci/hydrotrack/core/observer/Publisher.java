@@ -1,10 +1,13 @@
-package com.laurenci.hydrotrack.core.achievement;
+package com.laurenci.hydrotrack.core.observer;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class Publisher<T, E extends  Enum<E>, S extends Subscriber<T>> {
     private final Map<E, List<S>> subscribers = new TreeMap<>();
 

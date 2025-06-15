@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Configuration;
 
 import com.laurenci.hydrotrack.core.drink.custom.CustomDrinkRepository;
 import com.laurenci.hydrotrack.core.drink.system.DrinkRepository;
+import com.laurenci.hydrotrack.core.observer.Publisher;
+import com.laurenci.hydrotrack.core.observer.achievement.Achievement;
+import com.laurenci.hydrotrack.core.observer.achievement.AchievementEvent;
 import com.laurenci.hydrotrack.core.record.RecordRepository;
 import com.laurenci.hydrotrack.core.report.ReportRepository;
 import com.laurenci.hydrotrack.core.user.UserRepository;
@@ -14,13 +17,14 @@ import com.laurenci.hydrotrack.service.drink.system.DrinkService;
 import com.laurenci.hydrotrack.service.record.RecordService;
 import com.laurenci.hydrotrack.service.report.ReportService;
 import com.laurenci.hydrotrack.service.user.UserService;
+import com.laurenci.hydrotrack.service.user.AchievementSupportUserService;
 
 @Configuration
 public class ServiceConfiguration {
 
     @Bean
-    public UserService userService(UserRepository userRepository) {
-        return new UserService(userRepository);
+    public UserService userService(UserRepository userRepository, Publisher<Long, AchievementEvent, Achievement> achievementPublisher){
+        return new AchievementSupportUserService(userRepository, achievementPublisher);
     }
 
     @Bean

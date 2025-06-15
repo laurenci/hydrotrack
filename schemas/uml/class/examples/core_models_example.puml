@@ -1,0 +1,62 @@
+@startuml
+
+class Drink {
+    - Long id
+    - DrinkType type
+    - String brand
+    - String name
+    --
+    JavaBean's methods and conctructors
+}
+
+class CustomDrink {
+    - Long userId
+    --
+    JavaBean's methods and conctructors
+}
+
+class DrinkType {
+    - String type
+    - DrinkGroup group
+    --
+    JavaBean's methods and conctructors
+}
+
+enum DrinkGroup {
+    WATER
+    TEA
+    COFFEE
+    ...
+}
+
+Drink <|-- CustomDrink
+Drink o-- DrinkType
+DrinkType o-- DrinkGroup
+
+class Record {
+    - RecordId id
+    - Drink drink
+    - DrinkArea area
+    - Double amount
+    --
+    JavaBean's methods and conctructors
+}
+
+enum DrinkArea {
+    SYSTEM
+    CUSTOM
+}
+
+Record o-- DrinkArea
+
+class RecordId {
+    - Long userId
+    - Long drinkId
+    - LocalDateTime date
+    --
+    JavaBean's methods and conctructors
+}
+
+Record *-- RecordId
+Record o-- Drink
+@enduml

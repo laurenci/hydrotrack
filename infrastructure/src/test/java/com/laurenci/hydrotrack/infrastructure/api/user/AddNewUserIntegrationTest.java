@@ -52,7 +52,8 @@ public class AddNewUserIntegrationTest {
                         .content(newUserJson))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(142))
-                .andExpect(jsonPath("$.username").value("testuser"));
+                .andExpect(jsonPath("$.username").value("testuser"))
+                .andExpect(jsonPath("$.profile").isNotEmpty());
     }
 }
 

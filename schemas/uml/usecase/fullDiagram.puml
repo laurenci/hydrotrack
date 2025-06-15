@@ -5,14 +5,19 @@ skinparam nodesep 10
 
 :Користувач: as user
 
+package "Ведення особистої інформації" {
+    (Редагувати власний профіль) as edit_profile
+    (Розрахувати денну норму) as determine_daily_goal
+}
+
 package "Ведення статистики випотої рідини" {
   (Редагувати кількість випитої рідини) as edit_records
   (Додати новий запис) as add_new_record
   (Змінити вже існуючий запис) as edit_record
   (Видалити наявний запис) as delete_record
   
-  (Переглянути записи за певний проміжок часу) as search_records
-  (Переглянути статистику за певний проміжок часу) as statistic_records
+  (Переглянути записи за актуальний день) as search_records
+  (Переглянути звіти зі статистикою за минулий проміжок часу) as statistic_records
   
   (Редагувати власні напої) as edit_custom_drinks
   (Додати новий напій) as add_new_drink
@@ -44,6 +49,9 @@ package "Система досягнень" {
   view_achievement_progress .up.> view_single_achievement : include
   view_gained_achievement_precentage .up.> view_single_achievement : include
 }
+
+user --> edit_profile
+user --> determine_daily_goal
 
 user --> edit_records
 user --> edit_custom_drinks

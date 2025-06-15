@@ -1,4 +1,4 @@
-package com.laurenci.hydrotrack.core.achievement;
+package com.laurenci.hydrotrack.core.observer;
 
 import lombok.AllArgsConstructor;
 

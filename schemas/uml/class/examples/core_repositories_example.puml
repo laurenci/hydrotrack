@@ -1,0 +1,15 @@
+@startuml
+interface Repository<T, ID> {
+    {abstract} create(T t) : T
+    {abstract} readById(ID id) : T
+    {abstract} update(T t) : T
+    {abstract} deleteById(ID id) : T
+}
+
+interface RecordRepository<Record, RecordId> {
+    {abstract} findByUserId(Integer userId) : List<Record>
+    {abstract} findByUserIdAndDateRange(Long userId, LocalDateTime from, LocalDateTime to) : List<Record>
+}
+
+Repository <|-- RecordRepository
+@enduml

@@ -31,9 +31,10 @@ dependencies {
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-mysql'
 
+	implementation 'io.nats:jnats:2.21.1'
+
 	implementation project(":service")
 	implementation project(":core")
-
 
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 

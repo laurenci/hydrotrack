@@ -2,22 +2,26 @@
 skinparam linetype polyline
 skinparam componentStyle uml1
 
-component hydrotrack.core
-component hydrotrack.client
 
-component hydrotrack.server {
-    component hydrotrack.server.api
-    component hydrotrack.server.service
-    component hydrotrack.server.dal
-}
-
-component hydrotrack.messaging {
+package "Domain Model" as dm {
+    component hydrotrack.core
     component hydrotrack.messaging.api
-    component hydrotrack.messaging.nuts
 }
 
-hydrotrack.server ..> hydrotrack.core : "use"
-hydrotrack.client ..> hydrotrack.core : "use"
-hydrotrack.messaging ..> hydrotrack.core : "use"
-hydrotrack.server.service ..> hydrotrack.messaging : "use"
+package "Domain Services" as ds {
+    component hydrotrack.service
+    component hydrotrack.messaging.service
+}
+
+
+
+package Infrastructure as infr {
+    component hydrotrack.infrastructure.api
+    component hydrotrack.infrastructure.dal
+    component hydrotrack.infrastructure.messaging
+}
+
+ds .down.> dm : "uses"
+infr .down.> ds : "uses"
+
 @enduml

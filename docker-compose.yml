@@ -7,13 +7,22 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: password   # change this
-      MYSQL_DATABASE: hydrotrack          # optional
-      MYSQL_USER: server                  # optional
-      MYSQL_PASSWORD: server      # optional
+      MYSQL_DATABASE: hydrotrack      # optional
+      MYSQL_USER: server              # optional
+      MYSQL_PASSWORD: server          # optional
     ports:
       - "3306:3306"
     volumes:
       - mariadb_data:/var/lib/mysql
+
+  nats:
+    image: nats:alpine3.21
+    container_name: nats
+    restart: unless-stopped
+    ports:
+      - "4222:4222"   # Client connections
+      - "8222:8222"   # HTTP monitoring (optional)
+    command: "-p 4222 -m 8222"
 
 volumes:
   mariadb_data:
